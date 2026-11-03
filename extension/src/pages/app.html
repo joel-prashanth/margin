@@ -1,0 +1,1249 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Margin</title>
+
+  <link rel="stylesheet" href="./app.css" />
+</head>
+
+<body>
+  <div class="app-shell">
+    <!-- =================================================
+           HEADER
+      ================================================== -->
+
+    <header class="header">
+      <div>
+        <h1>Margin</h1>
+
+        <p>Faculty Workflow Tools → Aurora ERP</p>
+      </div>
+    </header>
+
+    <div id="loginStatus" class="status status-neutral" style="margin-bottom: 24px;">Waiting...</div>
+
+    <!-- =================================================
+           MAIN NAVIGATION
+      ================================================== -->
+
+    <nav id="mainNavigation" class="main-navigation hidden" aria-label="Faculty workflow tools">
+      <button id="attendanceTabButton" class="nav-tab active" type="button">
+        Attendance
+      </button>
+
+      <button id="journalTabButton" class="nav-tab" type="button">
+        Journal Grading
+      </button>
+
+      <button id="labTabButton" class="nav-tab" type="button">
+        Lab Reports AI
+      </button>
+
+      <button id="essayTabButton" class="nav-tab" type="button">
+        Reflective Essay
+      </button>
+
+
+      <button id="projectTabButton" class="nav-tab" type="button">
+        Project Report
+      </button>
+
+      <button id="assistantTabButton" class="nav-tab" type="button">
+        Attendance Assistant
+      </button>
+    </nav>
+
+    <!-- =================================================
+           PRIVACY CONSENT
+      ================================================== -->
+
+    <section id="consentSection" class="card hidden">
+      <h2>Privacy &amp; Data Access</h2>
+
+      <p>
+        Margin works with your authenticated Aurora ERP session and
+        configured Google attendance spreadsheet.
+      </p>
+
+      <div class="warning-message">
+        <strong> Important </strong>
+
+        <br /><br />
+
+        The extension reads information required for attendance mapping and
+        faculty workflows.
+
+        <br /><br />
+
+        Reflective Journal grading may send journal response text to the
+        Margin grading service for analysis.
+
+        <br /><br />
+
+        Student names, registration numbers, email addresses, submission IDs,
+        and ERP identifiers are not included in the AI grading request.
+      </div>
+
+      <label class="checkbox-row">
+        <input id="consentCheckbox" type="checkbox" />
+
+        <span>
+          I understand and consent to Margin accessing the data
+          required for these faculty workflows.
+        </span>
+      </label>
+
+      <div class="button-row">
+        <button id="acceptConsentButton" type="button" disabled>
+          Accept &amp; Continue
+        </button>
+
+        <a href="./privacy.html" target="_blank" rel="noopener noreferrer" class="text-link">
+          Read Privacy Policy
+        </a>
+      </div>
+    </section>
+
+    <!-- =================================================
+           ATTENDANCE SETUP
+      ================================================== -->
+
+    <section id="setupSection" class="card hidden">
+      <div class="section-heading">
+        <div>
+          <h2>Attendance Setup</h2>
+
+          <p>
+            Connect Aurora ERP classes with their matching Google Sheet tabs.
+          </p>
+        </div>
+      </div>
+
+      <div class="info-message" style="margin-bottom: 16px;">
+        💡 <strong>Tip:</strong> An attendance spreadsheet is only required for the Attendance tab. You can use <strong>Journal Grading</strong> and <strong>Lab Reports AI</strong> directly from the navigation tabs above without configuring an Excel / Google spreadsheet.
+      </div>
+
+      <div class="field">
+        <label for="facultyNameInput"> ERP Faculty </label>
+
+        <input id="facultyNameInput" type="text" placeholder="Enter or verify ERP Faculty Name" />
+
+        <div class="field-note">
+          Faculty identity is detected from your current Aurora ERP session.
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="spreadsheetInput"> Attendance Spreadsheet </label>
+
+        <input id="spreadsheetInput" type="text" placeholder="Paste Google Spreadsheet URL or ID" autocomplete="off" />
+
+        <div class="field-note">
+          Enter the Google Spreadsheet containing your attendance sheets.
+        </div>
+      </div>
+
+      <div class="button-row">
+        <button id="detectMappingsButton" type="button">
+          Detect &amp; Map Classes
+        </button>
+      </div>
+
+      <div id="mappingStatus" class="info-message hidden"></div>
+
+      <div id="mappingResults" class="mapping-results hidden"></div>
+
+      <div class="button-row">
+        <button id="saveSetupButton" type="button" class="hidden">
+          Verify &amp; Save Setup
+        </button>
+
+        <button id="cancelSetupButton" type="button" class="secondary hidden">
+          Cancel &amp; Return to Attendance
+        </button>
+      </div>
+    </section>
+
+    <!-- =================================================
+           ATTENDANCE
+      ================================================== -->
+
+    <section id="attendanceSection" class="card hidden">
+      <div class="section-heading">
+        <div>
+          <h2>Attendance</h2>
+
+          <p id="profileDisplay">Faculty profile</p>
+        </div>
+
+        <div class="button-row">
+          <button id="settingsButton" type="button" class="secondary">
+            Settings
+          </button>
+
+          <button id="resetExtensionButton" type="button" class="danger-outline">
+            Reset Extension
+          </button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="modeSelect"> Attendance Mode </label>
+
+        <select id="modeSelect">
+          <option value="today">Today</option>
+
+          <option value="historical">Historical Date</option>
+        </select>
+      </div>
+
+      <div id="dateField" class="field hidden">
+        <label for="dateInput"> Attendance Date </label>
+
+        <input id="dateInput" type="date" />
+      </div>
+
+      <div class="button-row">
+        <button id="loadClassesButton" type="button">Load Classes</button>
+      </div>
+
+      <section id="classSection" class="workflow-section hidden">
+        <hr />
+
+        <h3>Select ERP Class</h3>
+
+        <div class="field">
+          <label for="classSelect"> Class / Session </label>
+
+          <select id="classSelect"></select>
+        </div>
+
+        <div class="button-row">
+          <button id="previewButton" type="button">Preview Attendance</button>
+        </div>
+      </section>
+
+      <section id="previewSection" class="workflow-section hidden">
+        <hr />
+
+        <h3>Attendance Preview</h3>
+
+        <div id="previewInfo" class="preview-info"></div>
+
+        <div id="validationMessage" class="validation-message"></div>
+
+        <section id="absenteesSection" class="student-section hidden">
+          <h3>Absentees</h3>
+
+          <div id="absenteesList" class="student-list"></div>
+        </section>
+
+        <section id="invalidSection" class="student-section hidden">
+          <h3>Invalid / Missing Attendance</h3>
+
+          <div id="invalidList" class="student-list"></div>
+        </section>
+
+        <div class="button-row">
+          <button id="submitButton" type="button" class="hidden">
+            Submit Attendance
+          </button>
+        </div>
+      </section>
+
+      <section id="resultSection" class="workflow-section hidden">
+        <hr />
+
+        <h3>ERP Submission Result</h3>
+
+        <div id="resultOutput"></div>
+      </section>
+    </section>
+
+    <!-- =================================================
+           JOURNAL GRADING
+      ================================================== -->
+
+    <section id="journalSection" class="hidden">
+      <div class="card">
+        <div class="section-heading">
+          <div>
+            <h2>Reflective Journal Grading</h2>
+
+            <p>
+              AI-assisted grading with faculty review before ERP submission.
+            </p>
+          </div>
+
+          <div class="button-row">
+            <button id="journalSettingsButton" type="button" class="secondary">
+              Settings
+            </button>
+          </div>
+        </div>
+
+        <div class="journal-warning">
+          <strong> Faculty review required </strong>
+
+          <br /><br />
+
+          AI-generated marks and feedback are recommendations only.
+
+          <br />
+
+          Review and edit every evaluation before saving anything to Aurora
+          ERP.
+
+          <br /><br />
+
+          Only journal response fields are sent to the grading service.
+
+          <br />
+
+          Student name, registration number, email address, submission ID, and
+          ERP identifiers are not included in the AI grading request.
+        </div>
+
+        <!-- =============================================
+               CLASS PICKER
+          ============================================== -->
+
+        <div class="form-grid">
+          <div class="field">
+            <label for="journalTermSelect"> Academic Term </label>
+            <select id="journalTermSelect">
+              <option value="TERM2" selected>Term 2 (Current)</option>
+              <option value="ALL">All Terms (Include Term 1)</option>
+              <option value="TERM1">Term 1 (Archived)</option>
+            </select>
+            <div id="journalTermStatus" class="field-note">
+              Term 2 active by default. Term 1 details hidden.
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="journalClassSelect"> Class </label>
+
+            <select id="journalClassSelect" disabled>
+              <option value="">Detecting classes...</option>
+            </select>
+
+            <div id="journalClassStatus" class="field-note">
+              Margin will identify which classes contain Reflective
+              Journal assessments.
+            </div>
+          </div>
+
+          <!-- ===========================================
+                 ASSESSMENT PICKER
+            ============================================ -->
+
+          <div class="field">
+            <label for="journalAssessmentId"> Reflective Journal </label>
+
+            <select id="journalAssessmentId" disabled>
+              <option value="">Select a class first</option>
+            </select>
+
+            <div id="journalAssessmentStatus" class="field-note">
+              The newest Reflective Journal for the selected class will be
+              selected automatically.
+            </div>
+          </div>
+        </div>
+
+        <div class="button-row">
+          <button id="loadJournalSubmissionsButton" type="button" disabled>
+            Load Submissions
+          </button>
+        </div>
+      </div>
+
+      <!-- =================================================
+             JOURNAL QUEUE
+        ================================================== -->
+
+      <section id="journalQueueSection" class="card hidden">
+        <div class="section-heading">
+          <div>
+            <h2>Journal Submissions</h2>
+
+            <p id="journalQueueSummary">No submissions loaded.</p>
+          </div>
+
+          <div class="field compact-select">
+            <label for="journalStatusFilter"> Status </label>
+
+            <select id="journalStatusFilter">
+              <option value="ALL">All</option>
+
+              <option value="SUBMITTED" selected>Pending</option>
+
+              <option value="EVALUATED">Evaluated</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="journalSubmissionList" class="journal-submission-list"></div>
+
+        <div class="button-row" style="margin-top: 1rem;">
+          <button id="bulkEvaluateButton" type="button" class="hidden">
+            Bulk Evaluate Pending Journals
+          </button>
+        </div>
+
+        <div id="bulkEvaluateStatus" class="hidden" style="margin-top: 1rem;"></div>
+      </section>
+
+      <!-- =================================================
+             SUBMISSION DETAIL
+        ================================================== -->
+
+      <section id="journalDetailSection" class="card hidden">
+        <div class="section-heading">
+          <div>
+            <h2 id="journalStudentName">Student</h2>
+
+            <p id="journalStudentMeta"></p>
+          </div>
+
+          <button id="journalBackButton" type="button" class="secondary">
+            ← Back to Submissions
+          </button>
+        </div>
+
+        <div id="journalMetadata" class="journal-metadata"></div>
+
+        <div id="journalContent" class="journal-content"></div>
+
+        <section id="journalExistingEvaluation" class="hidden">
+          <hr />
+
+          <h3>Existing ERP Evaluation</h3>
+
+          <div id="journalExistingEvaluationContent"></div>
+        </section>
+
+        <hr />
+
+        <div class="button-row">
+          <button id="aiEvaluateJournalButton" type="button">
+            Evaluate with AI
+          </button>
+        </div>
+
+        <div id="journalAiStatus" class="hidden"></div>
+      </section>
+
+      <!-- =================================================
+             AI REVIEW
+        ================================================== -->
+
+      <section id="journalReviewSection" class="card hidden">
+        <div class="section-heading">
+          <div>
+            <h2>AI Grading Suggestion</h2>
+
+            <p>
+              Review and edit every score before accepting the evaluation.
+            </p>
+          </div>
+        </div>
+
+        <div class="journal-warning">
+          <strong> AI recommendation — not saved to ERP. </strong>
+
+          <br /><br />
+
+          You remain responsible for the final marks and feedback.
+        </div>
+
+        <div id="journalRubricEditor" class="rubric-grid"></div>
+
+        <div class="journal-total">
+          <strong> Total: </strong>
+
+          <span id="journalTotalMarks"> 0 / 20 </span>
+        </div>
+
+        <div class="field">
+          <label for="journalFeedbackInput"> Faculty Feedback </label>
+
+          <textarea id="journalFeedbackInput" rows="6"
+            placeholder="Review or edit the suggested feedback..."></textarea>
+        </div>
+
+        <div id="journalFlags" class="hidden"></div>
+
+        <div class="button-row">
+          <button id="journalRegenerateButton" type="button" class="secondary">
+            Regenerate AI Suggestion
+          </button>
+        </div>
+
+        <hr />
+
+        <div class="button-row">
+          <button id="journalSaveButton" type="button">
+            Save Evaluation
+          </button>
+
+          <button id="journalSaveNextButton" type="button">
+            Save &amp; Next
+          </button>
+        </div>
+
+        <div id="journalSaveStatus" class="hidden"></div>
+
+        <div class="field-note">
+          Saving updates the evaluation in Aurora ERP. It does not indicate
+          that the result has been published to the student.
+        </div>
+      </section>
+    </section>
+
+    <!-- =================================================
+           LAB REPORTS AI EVALUATOR
+      ================================================== -->
+
+    <section id="labSection" class="hidden">
+      <div class="card">
+        <div class="section-heading">
+          <div>
+            <h2>Lab Reports Multimodal AI Evaluator</h2>
+            <p>
+              Direct Multimodal PDF evaluation with Google Gemini 2.0 / 1.5 Flash (analyzes typed text, handwriting, and diagrams).
+            </p>
+          </div>
+
+          <div class="button-row">
+            <button id="labSettingsButton" type="button" class="secondary">
+              Settings
+            </button>
+          </div>
+        </div>
+
+        <div class="journal-warning">
+          <strong>Direct Multimodal Vision Evaluation</strong>
+          <br /><br />
+          Full PDF submissions with ER diagrams, transaction flows, and handwritten notes are evaluated directly by Gemini Flash Vision.
+          <br />
+          Review and confirm scores before saving, or use <strong>1-Click Batch AI Evaluation</strong> to grade entire lab sections.
+        </div>
+
+        <!-- CLASS & ASSESSMENT PICKER -->
+        <div class="form-grid">
+          <div class="field">
+            <label for="labTermSelect"> Academic Term </label>
+            <select id="labTermSelect">
+              <option value="TERM2" selected>Term 2 (Current)</option>
+              <option value="ALL">All Terms (Include Term 1)</option>
+              <option value="TERM1">Term 1 (Archived)</option>
+            </select>
+            <div id="labTermStatus" class="field-note">
+              Term 2 active by default. Term 1 details hidden.
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="labClassSelect"> Class </label>
+            <select id="labClassSelect" disabled>
+              <option value="">Detecting classes...</option>
+            </select>
+            <div id="labClassStatus" class="field-note">
+              Margin will list your classes containing Lab assessments.
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="labAssessmentId"> Assessment (e.g. Lab 5) </label>
+            <select id="labAssessmentId" disabled>
+              <option value="">Select a class first</option>
+            </select>
+            <div id="labAssessmentStatus" class="field-note">
+              Select the Lab Report or practical assessment to evaluate.
+            </div>
+          </div>
+        </div>
+
+        <div class="button-row">
+          <button id="loadLabSubmissionsButton" type="button" disabled>
+            Load Lab Submissions
+          </button>
+        </div>
+      </div>
+
+      <!-- LAB QUEUE -->
+      <section id="labQueueSection" class="card hidden">
+        <div class="section-heading">
+          <div>
+            <h2>Lab Submissions Queue</h2>
+            <p id="labQueueSummary">No submissions loaded.</p>
+          </div>
+
+          <div class="field compact-select">
+            <label for="labStatusFilter"> Status </label>
+            <select id="labStatusFilter">
+              <option value="ALL">All</option>
+              <option value="SUBMITTED" selected>Pending</option>
+              <option value="EVALUATED">Evaluated</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="labSubmissionList" class="journal-submission-list"></div>
+
+        <div class="button-row" style="margin-top: 1.25rem;">
+          <button id="bulkEvaluateLabButton" type="button" class="primary hidden" style="background: #2563eb; color: #ffffff; font-weight: 700; padding: 12px 20px;">
+            ⚡ 1-Click Batch AI Evaluation
+          </button>
+        </div>
+
+        <div id="bulkEvaluateLabStatus" class="hidden" style="margin-top: 1rem;"></div>
+      </section>
+
+      <!-- LAB DETAIL -->
+      <section id="labDetailSection" class="card hidden">
+        <div class="section-heading">
+          <div>
+            <h2 id="labStudentName">Student</h2>
+            <p id="labStudentMeta"></p>
+          </div>
+
+          <button id="labBackButton" type="button" class="secondary">
+            ← Back to Submissions
+          </button>
+        </div>
+
+        <div class="field">
+          <label>Student PDF Lab Report</label>
+          <div id="labPdfPreviewContainer"></div>
+        </div>
+
+        <hr style="margin: 20px 0;" />
+
+        <div class="button-row">
+          <button id="aiEvaluateLabButton" type="button" class="primary" style="background: #2563eb; color: #ffffff; font-weight: 700;">
+            ⚡ Evaluate with AI (Gemini Flash Multimodal)
+          </button>
+        </div>
+
+        <div id="labAiStatus" class="hidden" style="margin-top: 12px;"></div>
+      </section>
+
+      <!-- LAB REVIEW -->
+      <section id="labReviewSection" class="card hidden">
+        <div class="section-heading">
+          <div>
+            <h2>AI Lab Report Evaluation</h2>
+            <p>
+              Rubric breakdown with ER diagram and scenario validation. Review and customize marks before saving.
+            </p>
+          </div>
+        </div>
+
+        <div id="labRubricEditor" class="rubric-grid"></div>
+
+        <div class="journal-total" style="font-size: 16px; margin: 16px 0; padding: 12px 16px; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; color: #1e3a8a;">
+          <strong> Total Marks: </strong>
+          <span id="labTotalMarks" style="font-weight: 800; font-size: 18px; margin-left: 6px;"> 0 / 20 </span>
+        </div>
+
+        <div class="field">
+          <label for="labFeedbackInput"> Faculty Feedback &amp; Remarks </label>
+          <textarea id="labFeedbackInput" rows="5"
+            placeholder="Review or edit the suggested feedback..."></textarea>
+        </div>
+
+        <div id="labFlags" class="hidden" style="margin-bottom: 15px;"></div>
+
+        <div class="button-row">
+          <button id="labRegenerateButton" type="button" class="secondary">
+            Re-evaluate with AI
+          </button>
+        </div>
+
+        <hr style="margin: 20px 0;" />
+
+        <div class="button-row">
+          <button id="labSaveButton" type="button" class="primary" style="background: #059669; color: white;">
+            ✓ Save Evaluation to Aurora ERP
+          </button>
+
+          <button id="labSaveNextButton" type="button" class="primary" style="background: #2563eb; color: white;">
+            Save &amp; Next Student →
+          </button>
+        </div>
+
+        <div id="labSaveStatus" class="hidden" style="margin-top: 12px;"></div>
+      </section>
+    </section>
+
+    <!-- =================================================
+           REFLECTIVE ESSAY AI EVALUATOR
+      ================================================== -->
+
+    <section id="essaySection" class="hidden">
+      <div class="card">
+        <div class="section-heading">
+          <div>
+            <h2>Reflective Essay AI Evaluator</h2>
+            <p>
+              Dedicated PDF evaluation for university Reflective Essays (5 Questions x 40 Marks = 200 Marks Total). Minimum Passing Floor: 120 Marks.
+            </p>
+          </div>
+
+          <div class="button-row">
+            <button id="essaySettingsButton" type="button" class="secondary">
+              Settings
+            </button>
+          </div>
+        </div>
+
+        <div class="journal-warning" style="background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0;">
+          <strong>Direct Multimodal PDF Evaluation • 200 Marks Total (Min 120 Floor)</strong>
+          <br /><br />
+          Reflective Essay PDFs are evaluated question-by-question (Q1–Q5, 40 marks each).
+          <br />
+          Minimum marks floor: <strong>120 / 200</strong>. No feedback is required or generated.
+        </div>
+
+        <!-- CLASS & ASSESSMENT PICKER -->
+        <div class="form-grid">
+          <div class="field">
+            <label for="essayTermSelect"> Academic Term </label>
+            <select id="essayTermSelect">
+              <option value="TERM2" selected>Term 2 (Current)</option>
+              <option value="ALL">All Terms (Include Term 1)</option>
+              <option value="TERM1">Term 1 (Archived)</option>
+            </select>
+            <div id="essayTermStatus" class="field-note">
+              Term 2 active by default. Term 1 details hidden.
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="essayClassSelect"> Class </label>
+            <select id="essayClassSelect" disabled>
+              <option value="">Detecting classes...</option>
+            </select>
+            <div id="essayClassStatus" class="field-note">
+              Margin will list your classes containing Reflective Essay assessments.
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="essayAssessmentId"> Reflective Essay Assessment </label>
+            <select id="essayAssessmentId" disabled>
+              <option value="">Select a class first</option>
+            </select>
+            <div id="essayAssessmentStatus" class="field-note">
+              Select the Reflective Essay assessment to evaluate.
+            </div>
+          </div>
+        </div>
+
+        <div class="button-row">
+          <button id="loadEssaySubmissionsButton" type="button" disabled>
+            Load Reflective Essay Submissions
+          </button>
+        </div>
+      </div>
+
+      <!-- ESSAY QUEUE -->
+      <section id="essayQueueSection" class="card hidden">
+        <div class="section-heading">
+          <div>
+            <h2>Reflective Essay Submissions Queue</h2>
+            <p id="essayQueueSummary">No submissions loaded.</p>
+          </div>
+
+          <div class="field compact-select">
+            <label for="essayStatusFilter"> Status </label>
+            <select id="essayStatusFilter">
+              <option value="ALL">All</option>
+              <option value="SUBMITTED" selected>Pending</option>
+              <option value="EVALUATED">Evaluated</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="essaySubmissionList" class="journal-submission-list"></div>
+
+        <div class="button-row" style="margin-top: 1.25rem;">
+          <button id="bulkEvaluateEssayButton" type="button" class="primary hidden" style="background: #16a34a; color: #ffffff; font-weight: 700; padding: 12px 20px;">
+            ⚡ 1-Click Batch AI Evaluation
+          </button>
+        </div>
+
+        <div id="bulkEvaluateEssayStatus" class="hidden" style="margin-top: 1rem;"></div>
+      </section>
+
+      <!-- ESSAY DETAIL -->
+      <section id="essayDetailSection" class="card hidden">
+        <div class="section-heading">
+          <div>
+            <h2 id="essayStudentName">Student</h2>
+            <p id="essayStudentMeta"></p>
+          </div>
+
+          <button id="essayBackButton" type="button" class="secondary">
+            ← Back to Submissions
+          </button>
+        </div>
+
+        <div class="field">
+          <label>Student PDF Reflective Essay</label>
+          <div id="essayPdfPreviewContainer"></div>
+        </div>
+
+        <hr style="margin: 20px 0;" />
+
+        <div class="button-row">
+          <button id="aiEvaluateEssayButton" type="button" class="primary" style="background: #16a34a; color: #ffffff; font-weight: 700;">
+            ⚡ Evaluate with AI (5 Questions, Min 120 Marks)
+          </button>
+        </div>
+
+        <div id="essayAiStatus" class="hidden" style="margin-top: 12px;"></div>
+      </section>
+
+      <!-- ESSAY REVIEW -->
+      <section id="essayReviewSection" class="card hidden">
+        <div class="section-heading">
+          <div>
+            <h2>AI Reflective Essay Evaluation</h2>
+            <p>
+              Rubric breakdown for Questions 1 to 5 (40 Marks each, 200 Total). Minimum passing floor: 120 Marks. Review scores before saving.
+            </p>
+          </div>
+        </div>
+
+        <div id="essayRubricEditor" class="rubric-grid"></div>
+
+        <div class="journal-total" style="font-size: 16px; margin: 16px 0; padding: 12px 16px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; color: #166534; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <strong> Total Marks: </strong>
+            <span id="essayTotalMarks" style="font-weight: 800; font-size: 20px; margin-left: 6px;"> 0 / 200 </span>
+          </div>
+          <span style="font-size: 12px; font-weight: 600; color: #15803d; background: #dcfce7; padding: 4px 8px; border-radius: 6px;">
+            ✓ Minimum Floor: 120/200 Enforced
+          </span>
+        </div>
+
+        <div class="field">
+          <label for="essayFeedbackInput">
+            Faculty Remarks (Optional • Left empty by default as requested)
+          </label>
+          <textarea id="essayFeedbackInput" rows="2"
+            placeholder="No feedback required (will be saved as blank)..."></textarea>
+          <div class="field-note">
+            Feedback text is optional. Leave blank to save marks with zero feedback remarks.
+          </div>
+        </div>
+
+        <div id="essayFlags" class="hidden" style="margin-bottom: 15px;"></div>
+
+        <div class="button-row">
+          <button id="essayRegenerateButton" type="button" class="secondary">
+            Re-evaluate with AI
+          </button>
+        </div>
+
+        <hr style="margin: 20px 0;" />
+
+        <div class="button-row">
+          <button id="essaySaveButton" type="button" class="primary" style="background: #059669; color: white;">
+            ✓ Save Evaluation to Aurora ERP
+          </button>
+
+          <button id="essaySaveNextButton" type="button" class="primary" style="background: #2563eb; color: white;">
+            Save &amp; Next Student →
+          </button>
+        </div>
+
+        <div id="essaySaveStatus" class="hidden" style="margin-top: 12px;"></div>
+      </section>
+    </section>
+
+    <!-- =================================================
+           PROJECT REPORT EVALUATOR
+      ================================================== -->
+
+    <section id="projectSection" class="hidden">
+      <div class="card">
+        <div class="section-heading">
+          <div>
+            <h2>Project Report AI Evaluator</h2>
+            <p>
+              Automated PDF Project Report evaluation (100 Marks Total • Floor: 80 to 95 Marks).
+            </p>
+          </div>
+
+          <div class="button-row">
+            <button id="projectSettingsButton" type="button" class="secondary">
+              Settings
+            </button>
+          </div>
+        </div>
+
+        <div class="journal-warning" style="background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0;">
+          <strong>Project Report Evaluation Rubric (100 Marks Total • Strictly 80–95 Marks)</strong>
+          <br /><br />
+          • <strong>Problem Definition &amp; Scope</strong> (Max 20, Min 16)<br />
+          • <strong>System Architecture &amp; Design</strong> (Max 20, Min 16)<br />
+          • <strong>Implementation &amp; Technical Depth</strong> (Max 20, Min 16)<br />
+          • <strong>Testing, Evaluation &amp; Results</strong> (Max 20, Min 16)<br />
+          • <strong>Conclusion &amp; Documentation</strong> (Max 20, Min 16)<br />
+          <br />
+          Evaluates student PDF reports with multimodal Gemini Vision / Intelligent heuristic. Guaranteed realistic score variation strictly between <strong>80 and 95 marks</strong>.
+        </div>
+
+        <!-- CLASS & ASSESSMENT PICKER -->
+        <div class="form-grid">
+          <div class="field">
+            <label for="projectTermSelect"> Academic Term </label>
+            <select id="projectTermSelect">
+              <option value="TERM2" selected>Term 2 (Current)</option>
+              <option value="ALL">All Terms (Include Term 1)</option>
+              <option value="TERM1">Term 1 (Archived)</option>
+            </select>
+            <div id="projectTermStatus" class="field-note">
+              Term 2 active by default. Term 1 details hidden.
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="projectClassSelect"> Class </label>
+            <select id="projectClassSelect">
+              <option value="">Select a Class...</option>
+              <option value="BTECH(HONS.)CSEGAI-2A">BTECH(HONS.)CSEGAI-2A — GenAI 2A</option>
+              <option value="BTECH(HONS.)CSEGAI-2C">BTECH(HONS.)CSEGAI-2C — GenAI 2C</option>
+              <option value="BTECH(HONS.)CSEDS-2B">BTECH(HONS.)CSEDS-2B — DS 2B</option>
+              <option value="BTECH(HONS.)CSEFSD-2B">BTECH(HONS.)CSEFSD-2B — FSD 2B</option>
+            </select>
+            <div id="projectClassStatus" class="field-note">
+              Select class to view Project Report assessments.
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="projectAssessmentId"> Project Report Assessment </label>
+            <select id="projectAssessmentId" disabled>
+              <option value="">Select a class first</option>
+            </select>
+            <div id="projectAssessmentStatus" class="field-note">
+              Select the Project Report assessment to evaluate.
+            </div>
+          </div>
+        </div>
+
+        <div class="button-row">
+          <button id="loadProjectSubmissionsButton" type="button" disabled>
+            Load Project Submissions
+          </button>
+        </div>
+      </div>
+
+      <!-- PROJECT QUEUE -->
+      <section id="projectQueueSection" class="card hidden">
+        <div class="section-heading">
+          <div>
+            <h2>Project Report Submissions Queue</h2>
+            <p id="projectQueueSummary">No submissions loaded.</p>
+          </div>
+
+          <div class="field compact-select">
+            <label for="projectStatusFilter"> Status </label>
+            <select id="projectStatusFilter">
+              <option value="ALL">All</option>
+              <option value="SUBMITTED" selected>Pending</option>
+              <option value="EVALUATED">Evaluated</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="projectSubmissionList" class="journal-submission-list"></div>
+
+        <div class="button-row" style="margin-top: 1.25rem;">
+          <button id="bulkEvaluateProjectButton" type="button" class="primary hidden" style="background: #10b981; color: #ffffff; font-weight: 700; padding: 12px 20px;">
+            ⚡ 1-Click Batch AI Evaluation (80–95 Marks)
+          </button>
+        </div>
+
+        <div id="bulkEvaluateProjectStatus" class="hidden" style="margin-top: 1rem;"></div>
+      </section>
+
+      <!-- PROJECT DETAIL -->
+      <section id="projectDetailSection" class="card hidden">
+        <div class="section-heading">
+          <div>
+            <h2 id="projectStudentName">Student</h2>
+            <p id="projectStudentMeta"></p>
+          </div>
+
+          <button id="projectBackButton" type="button" class="secondary">
+            ← Back to Submissions
+          </button>
+        </div>
+
+        <div class="field">
+          <label>Student PDF Project Report Submission</label>
+          <div id="projectPdfPreviewContainer"></div>
+        </div>
+
+        <hr style="margin: 20px 0;" />
+
+        <div class="button-row">
+          <button id="aiEvaluateProjectButton" type="button" class="primary" style="background: #10b981; color: #ffffff; font-weight: 700;">
+            ⚡ Evaluate with AI (Strictly 80–95 Marks)
+          </button>
+        </div>
+
+        <div id="projectAiStatus" class="hidden" style="margin-top: 12px;"></div>
+      </section>
+
+      <!-- PROJECT REVIEW -->
+      <section id="projectReviewSection" class="card hidden">
+        <div class="section-heading">
+          <div>
+            <h2>AI Project Report Evaluation</h2>
+            <p>
+              Rubric breakdown (Total 100 Marks • Strictly between 80 and 95 Marks). Review and adjust scores before saving to Aurora ERP.
+            </p>
+          </div>
+        </div>
+
+        <div id="projectRubricEditor" class="rubric-grid"></div>
+
+        <div class="journal-total" style="font-size: 16px; margin: 16px 0; padding: 12px 16px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; color: #166534; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <strong> Total Marks: </strong>
+            <span id="projectTotalMarks" style="font-weight: 800; font-size: 20px; margin-left: 6px;"> 0 / 100 </span>
+          </div>
+          <span style="font-size: 12px; font-weight: 600; color: #166534; background: #bbf7d0; padding: 4px 8px; border-radius: 6px;">
+            ✓ Bounded: 80–95 Marks Enforced
+          </span>
+        </div>
+
+        <div class="field">
+          <label for="projectFeedbackInput">
+            Faculty Remarks &amp; Feedback
+          </label>
+          <textarea id="projectFeedbackInput" rows="5"
+            placeholder="Review or edit project evaluation feedback..."></textarea>
+        </div>
+
+        <div id="projectFlags" class="hidden" style="margin-bottom: 15px;"></div>
+
+        <hr style="margin: 20px 0;" />
+
+        <div class="button-row">
+          <button id="projectSaveButton" type="button" class="primary" style="background: #059669; color: white;">
+            ✓ Save Evaluation to Aurora ERP
+          </button>
+
+          <button id="projectSaveNextButton" type="button" class="primary" style="background: #2563eb; color: white;">
+            Save &amp; Next Student →
+          </button>
+        </div>
+
+        <div id="projectSaveStatus" class="hidden" style="margin-top: 12px;"></div>
+      </section>
+    </section>
+
+    <!-- =================================================
+           ATTENDANCE ASSISTANT
+      ================================================== -->
+
+    <section id="assistantSection" class="hidden">
+      <div class="card">
+        <div class="section-heading">
+          <div>
+            <h2>Attendance Assistant</h2>
+            <p>Direct session-level attendance submission to Aurora ERP API.</p>
+          </div>
+          <div class="button-row">
+            <button id="assistantRefreshButton" type="button" class="secondary">
+              Detect Session
+            </button>
+          </div>
+        </div>
+
+        <!-- Lock state badge + info -->
+        <div class="aa-info-row">
+          <div class="aa-info-card">
+            <div class="aa-info-label">Session Lock Status</div>
+            <div class="aa-info-value">
+              <span id="aaLockBadge" class="aa-badge aa-badge-checking">—</span>
+            </div>
+          </div>
+          <div class="aa-info-card">
+            <div class="aa-info-label">Session ID</div>
+            <div id="aaSessionDisplay" class="aa-info-value aa-mono">Not detected</div>
+          </div>
+          <div class="aa-info-card">
+            <div class="aa-info-label">Students Detected</div>
+            <div id="aaStudentCount" class="aa-info-value">—</div>
+          </div>
+        </div>
+
+        <!-- Locked warning -->
+        <div id="aaLockWarning" class="aa-lock-warning hidden">
+          <strong>⚠ Portal UI Locked</strong><br /><br />
+          The portal's Mark Attendance button is disabled because
+          <code>isLocked</code> is <code>true</code>. This action sends the
+          attendance payload directly to the ERP API endpoint on your behalf
+          using your active faculty session — bypassing only the frontend
+          restriction.
+        </div>
+
+        <!-- ── STUDENT ROSTER ─────────────────────────────────── -->
+        <div id="aaRosterContainer" class="hidden">
+          <div class="aa-roster-header">
+            <div class="aa-roster-toolbar">
+              <input
+                id="aaRosterSearch"
+                type="text"
+                placeholder="Search by name or reg no…"
+                class="aa-roster-search"
+                autocomplete="off"
+              />
+              <div class="button-row">
+                <button id="aaMarkAllPresent" type="button" class="secondary">✓ All Present</button>
+                <button id="aaMarkAllAbsent"  type="button" class="secondary">✗ All Absent</button>
+              </div>
+            </div>
+            <div id="aaRosterSummary" class="aa-roster-summary"></div>
+          </div>
+          <div id="aaRosterList" class="aa-roster-list"></div>
+        </div>
+
+        <!-- Manual Session ID fallback -->
+        <div id="aaManualIdContainer" class="field hidden" style="margin-top: 16px;">
+          <label for="aaManualSessionId">Manual Session UUID</label>
+          <input
+            id="aaManualSessionId"
+            type="text"
+            placeholder="e.g. 40582709-9d30-467a-95e9-c67ee69e570b"
+            autocomplete="off"
+          />
+          <div class="field-note">
+            Open the Aurora ERP attendance page in another tab, then click
+            "Detect Session" above. If auto-detection fails, paste the session
+            UUID from the portal URL or network request here.
+          </div>
+        </div>
+
+        <!-- Submit button -->
+        <div class="button-row" style="margin-top: 20px;">
+          <button id="aaSubmitButton" type="button" class="hidden">
+            Mark Attendance
+          </button>
+        </div>
+
+        <!-- 403 copy-JSON fallback -->
+        <div id="aaCopyFallback" class="hidden" style="margin-top: 12px;">
+          <button id="aaCopyJsonButton" type="button" class="secondary">
+            Copy Attendance JSON to Clipboard
+          </button>
+          <div class="field-note">
+            The server has enforced the session lock. Copy this JSON and send it
+            to your administrator to request an unlock and manual entry.
+          </div>
+        </div>
+
+        <!-- Status output -->
+        <div id="aaStatus" class="hidden" style="margin-top: 16px;"></div>
+      </div>
+    </section>
+
+
+    <!-- =================================================
+           FOOTER
+      ================================================== -->
+
+    <footer class="footer">
+      <span> Margin BETA </span>
+
+      <span> • </span>
+
+      <a href="./privacy.html" target="_blank" rel="noopener noreferrer">
+        Privacy Policy
+      </a>
+    </footer>
+  </div>
+
+  <!-- =================================================
+         SETTINGS MODAL
+    ================================================== -->
+  <dialog id="settingsModal" class="modal">
+    <div class="modal-content card">
+      <div class="section-heading">
+        <h2>AI Evaluation Settings</h2>
+        <button id="closeSettingsButton" class="secondary" type="button">Close</button>
+      </div>
+
+      <div style="margin-bottom: 20px; padding: 12px; background: #f8fafc; border-left: 4px solid #f97316; border-radius: 6px;">
+        <strong style="color: #c2410c; font-size: 14px;">Cloudflare Workers AI (Reflective Journals)</strong>
+        <p style="margin: 4px 0 0; font-size: 12px; color: #475569;">Connect your custom Cloudflare Worker for AI grading.</p>
+      </div>
+
+      <div class="field">
+        <label for="cfWorkerUrlInput">Cloudflare Worker Base URL</label>
+        <input id="cfWorkerUrlInput" type="url" placeholder="https://your-worker.your-subdomain.workers.dev" />
+        <div class="field-note">The base URL of your deployed Cloudflare Worker. Do not include trailing slash or paths.</div>
+      </div>
+
+      <div class="field">
+        <label for="rjModuleContextInput">RJ Module Context / Guidelines</label>
+        <textarea id="rjModuleContextInput" rows="3"
+          placeholder="Describe what each RJ module should contain..."></textarea>
+      </div>
+
+      <div style="margin: 30px 0 20px; padding: 12px; background: #eff6ff; border-left: 4px solid #3b82f6; border-radius: 6px;">
+        <strong style="color: #1d4ed8; font-size: 14px;">Google Gemini API (Lab Reports)</strong>
+        <p style="margin: 4px 0 0; font-size: 12px; color: #475569;">Required for multimodal PDF evaluation of Lab Reports.</p>
+      </div>
+
+      <div class="field">
+        <label for="geminiApiKeyInput">Gemini API Key</label>
+        <input id="geminiApiKeyInput" type="password" placeholder="AIzaSy..." />
+        <div class="field-note">Get a free key from <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">Google AI Studio</a>.</div>
+        <button id="checkGeminiModelsButton" type="button" class="secondary" style="margin-top: 8px;">Check Available Gemini Models</button>
+        <div id="geminiModelsList" class="hidden" style="margin-top: 8px; border: 1px solid #e2e8f0; border-radius: 4px; padding: 4px; max-height: 200px; overflow-y: auto;"></div>
+      </div>
+
+      <div class="field">
+        <label for="geminiModelSelect">Gemini Model</label>
+        <select id="geminiModelSelect">
+          <option value="gemini-3.1-flash-lite">gemini-3.1-flash-lite (Default)</option>
+          <option value="gemini-3.6-flash">gemini-3.6-flash</option>
+          <option value="gemini-2.0-flash">gemini-2.0-flash</option>
+          <option value="gemini-1.5-flash">gemini-1.5-flash</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="labModuleContextInput">Lab Context / Guidelines</label>
+        <textarea id="labModuleContextInput" rows="3"
+          placeholder="Enter grading guidelines or scenario details for the current Lab experiment..."></textarea>
+      </div>
+
+      <div class="button-row">
+        <button id="saveSettingsButton" type="button">Save Settings</button>
+      </div>
+
+      <div id="settingsStatus" class="hidden" style="margin-top: 1rem;"></div>
+    </div>
+  </dialog>
+
+  <script type="module" src="../app/main.js"></script>
+</body>
+
+</html>

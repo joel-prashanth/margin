@@ -1,0 +1,53 @@
+{
+  "manifest_version": 3,
+  "name": "Margin",
+  "version": "0.6.1",
+  "description": "Margin — faculty workflow tools for Aurora ERP: attendance and AI-assisted grading.",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "tabs",
+    "cookies",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://admissions.aurora.edu.in/*",
+    "https://admissionsserver.aurora.edu.in/*",
+    "https://docs.google.com/*",
+    "*://*.workers.dev/*",
+    "https://generativelanguage.googleapis.com/*",
+    "https://*.amazonaws.com/*",
+    "https://au-erp-production-storage.s3.ap-south-1.amazonaws.com/*"
+  ],
+  "background": {
+    "service_worker": "src/background/service-worker.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://admissions.aurora.edu.in/*"
+      ],
+      "js": [
+        "src/content/shared.js",
+        "src/content/table-tools.js",
+        "src/content/term-filter.js",
+        "src/content/draft-gradebook.js",
+        "src/content/attendance-state.js",
+        "src/content/main.js"
+      ],
+      "css": [
+        "src/content/content.css"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_title": "Margin"
+  },
+  "icons": {
+    "16": "assets/icons/icon16.png",
+    "48": "assets/icons/icon48.png",
+    "128": "assets/icons/icon128.png"
+  }
+}

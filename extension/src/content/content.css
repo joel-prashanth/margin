@@ -1,0 +1,58 @@
+:root {
+  --spacing: 4px;
+}
+
+.aurora-sortable-header {
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+}
+
+.aurora-sort-indicator {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  margin-left: 6px;
+  color: #94a3b8; /* Professional light gray color */
+  transition: color 0.2s ease;
+}
+
+.opacity-40 {
+  opacity: .4;
+}
+
+.w-3 {
+  width: calc(var(--spacing) * 3);
+}
+
+.h-3 {
+  height: calc(var(--spacing) * 3);
+}
+
+.aurora-sort-indicator svg {
+  vertical-align: middle;
+  display: block;
+  transition: opacity 0.2s ease;
+}
+
+.aurora-sortable-header:hover .aurora-sort-indicator {
+  color: #64748b; /* Slightly darker gray on hover */
+}
+
+.aurora-sortable-header:hover .aurora-sort-indicator svg {
+  opacity: 0.7; /* Makes it a bit more visible on hover */
+}
+
+/* Aurora Draft Gradebook Navigation Styles */
+.aurora-draft-gradebook-wrapper {
+  transition: all 0.2s ease;
+}
+
+aside:hover .aurora-draft-gradebook-btn span:last-child {
+  max-width: 400px !important;
+  opacity: 1 !important;
+}
+
+#aurora-draft-gradebook-view {
+  min-height: 100%;
+}

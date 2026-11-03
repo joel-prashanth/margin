@@ -1,0 +1,84 @@
+/* =====================================================
+   MARGIN DESIGN TOKENS
+   Ink, paper, a red pen and a highlighter: the tools a
+   teacher grades with.
+   ===================================================== */
+
+:root {
+  /* ---- Brand palette ---- */
+  --margin-ink: #1B1E3C;        /* primary: deep ink */
+  --margin-ink-soft: #2E3260;
+  --margin-paper: #FAF7F0;      /* background: warm paper */
+  --margin-paper-raised: #FFFDF8;
+  --margin-red: #E8483B;        /* accent: red pen (large text, marks, icons) */
+  --margin-red-text: #B8322A;   /* red pen for small text (AA on paper) */
+  --margin-highlight: #F6D44A;  /* secondary accent: highlighter */
+  --margin-graphite: #5A6072;   /* muted text */
+  --margin-rule: #E7E0CF;       /* page rules and borders */
+  --margin-rule-blue: #CFDBF3;  /* notebook lines */
+  --margin-sage: #2F7D5B;       /* success */
+
+  /* ---- Semantic roles ---- */
+  --bg: var(--margin-paper);
+  --surface: var(--margin-paper-raised);
+  --text: var(--margin-ink);
+  --text-muted: var(--margin-graphite);
+  --border: var(--margin-rule);
+  --accent: var(--margin-red);
+  --accent-text: var(--margin-red-text);
+  --highlight: var(--margin-highlight);
+  --inverse-bg: var(--margin-ink);
+  --inverse-text: var(--margin-paper);
+  --inverse-accent: var(--margin-highlight); /* labels on inverse sections */
+  --hero-rule: color-mix(in srgb, var(--margin-rule-blue) 55%, transparent);
+
+  /* ---- Type ---- */
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-body: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-hand: "Caveat", "Segoe Print", cursive;
+
+  --step--1: clamp(0.83rem, 0.8rem + 0.15vw, 0.9rem);
+  --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.1rem);
+  --step-1: clamp(1.2rem, 1.1rem + 0.45vw, 1.45rem);
+  --step-2: clamp(1.5rem, 1.3rem + 0.9vw, 2rem);
+  --step-3: clamp(2rem, 1.6rem + 1.8vw, 3rem);
+  --step-4: clamp(2.6rem, 1.9rem + 3.2vw, 4.6rem);
+
+  /* ---- Shape & depth ---- */
+  --radius-sm: 8px;
+  --radius: 14px;
+  --radius-lg: 22px;
+  --shadow: 0 1px 2px rgb(27 30 60 / 0.06), 0 8px 24px rgb(27 30 60 / 0.08);
+  --shadow-lg: 0 2px 4px rgb(27 30 60 / 0.06), 0 24px 60px rgb(27 30 60 / 0.14);
+
+  --page-width: 1120px;
+  --gutter: clamp(16px, 4vw, 32px);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12142A;
+    --surface: #1B1E3C;
+    --text: #F3EFE6;
+    --text-muted: #A9AEC4;
+    --border: #2E3260;
+    --accent-text: #F27A6F;
+    --inverse-bg: #F3EFE6;
+    --inverse-text: #1B1E3C;
+    --inverse-accent: var(--margin-red-text);
+    --hero-rule: rgb(207 219 243 / 0.07);
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #12142A;
+  --surface: #1B1E3C;
+  --text: #F3EFE6;
+  --text-muted: #A9AEC4;
+  --border: #2E3260;
+  --accent-text: #F27A6F;
+  --inverse-bg: #F3EFE6;
+  --inverse-text: #1B1E3C;
+  --inverse-accent: var(--margin-red-text);
+  --hero-rule: rgb(207 219 243 / 0.07);
+}

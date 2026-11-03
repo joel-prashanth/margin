@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Margin — grading, done in the margin</title>
+  <meta name="description" content="Margin drafts rubric scores and feedback for reflective journals, lab reports, essays and project reports, and maps your attendance sheet into Aurora ERP. You review, edit and save." />
+  <meta name="theme-color" content="#1B1E3C" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/site.css" />
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <nav class="nav container" aria-label="Main">
+      <a class="brand" href="#top" aria-label="Margin home">
+        <img src="assets/logo-mark.svg" alt="" width="36" height="36" />
+        <span>Margin</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#how">How it works</a></li>
+        <li><a href="#trust">Your control</a></li>
+      </ul>
+
+      <a class="btn btn-primary btn-sm" href="#demo">Try it free</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- ================= HERO ================= -->
+    <section class="hero" id="top">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">For faculty on Aurora ERP</p>
+
+          <h1>Grading, done <span class="marked">in the margin.</span></h1>
+
+          <p class="lede">
+            Margin drafts rubric scores and feedback for reflective journals,
+            lab reports, essays and project reports — and maps your attendance
+            sheet straight into Aurora ERP. You review, edit and save.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#demo">Grade a sample journal</a>
+            <a class="btn btn-ghost" href="#how">See how it works</a>
+          </div>
+
+          <p class="hero-note">Now in beta · Works with your existing Aurora ERP login</p>
+        </div>
+
+        <!-- Annotated page -->
+        <figure class="paper-card" aria-label="A reflective journal annotated by Margin">
+          <div class="paper-head">
+            <span class="paper-tag">Reflective Journal · Week 9</span>
+            <span class="paper-student">Student · 23CSE104</span>
+          </div>
+
+          <div class="paper-body">
+            <p><mark>This week I designed the ER model for our library system</mark> and realised my first draft had no way to track late returns.</p>
+            <p>I felt frustrated at first, but splitting <em>Loan</em> into its own entity made the queries simpler.</p>
+            <p>Next lab I'll normalise to 3NF before writing any SQL.</p>
+          </div>
+
+          <aside class="margin-notes" aria-hidden="true">
+            <span class="note note-1">clear experience ✓</span>
+            <span class="note note-2">say more about how you felt</span>
+            <span class="note note-3">good transfer →</span>
+          </aside>
+
+          <div class="score" aria-label="Draft score 17 out of 20">
+            <svg viewBox="0 0 120 70" aria-hidden="true">
+              <path d="M18 38 C 12 16, 88 6, 104 26 C 118 44, 70 64, 36 60 C 14 57, 10 44, 24 30" fill="none" stroke="#E8483B" stroke-width="3" stroke-linecap="round" />
+            </svg>
+            <span>17<small>/20</small></span>
+          </div>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ================= STRIP ================= -->
+    <section class="strip" aria-label="Supported work">
+      <div class="container strip-inner">
+        <span class="strip-label">Grades</span>
+        <ul class="chips">
+          <li>Reflective journals</li>
+          <li>Lab reports</li>
+          <li>Reflective essays</li>
+          <li>Project reports</li>
+        </ul>
+        <span class="strip-label">Plus</span>
+        <ul class="chips">
+          <li>Sheet → ERP attendance</li>
+          <li>Draft gradebook</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ================= FEATURES ================= -->
+    <section class="section" id="features">
+      <div class="container">
+        <header class="section-head">
+          <p class="eyebrow">What Margin does</p>
+          <h2>The paperwork, handled. The judgement, yours.</h2>
+        </header>
+
+        <div class="feature-grid">
+          <article class="feature">
+            <div class="feature-icon" aria-hidden="true">✎</div>
+            <h3>Rubric-first AI drafts</h3>
+            <p>Every journal gets a score per criterion — experience, feelings, learning, application, conclusion — with the reasoning beside it.</p>
+          </article>
+
+          <article class="feature">
+            <div class="feature-icon" aria-hidden="true">⎙</div>
+            <h3>Reads the whole PDF</h3>
+            <p>Lab reports, essays and project reports are read end to end, including tables and hand-drawn diagrams.</p>
+          </article>
+
+          <article class="feature">
+            <div class="feature-icon" aria-hidden="true">⚡</div>
+            <h3>A class in one click</h3>
+            <p>Batch-grade every pending submission. Margin paces itself around AI rate limits and keeps going.</p>
+          </article>
+
+          <article class="feature">
+            <div class="feature-icon" aria-hidden="true">✓</div>
+            <h3>Saves you can trust</h3>
+            <p>After each save, Margin reads the record back from Aurora ERP and checks every score matches what you approved.</p>
+          </article>
+
+          <article class="feature">
+            <div class="feature-icon" aria-hidden="true">▦</div>
+            <h3>Attendance from your sheet</h3>
+            <p>Map each class to its Google Sheet tab once. Preview the match against the ERP roster, then submit.</p>
+          </article>
+
+          <article class="feature">
+            <div class="feature-icon" aria-hidden="true">◧</div>
+            <h3>Better ERP pages</h3>
+            <p>A live draft gradebook, Term 2-only views and load-all tables, right inside the Aurora portal.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= HOW ================= -->
+    <section class="section section-ruled" id="how">
+      <div class="container">
+        <header class="section-head">
+          <p class="eyebrow">How it works</p>
+          <h2>Three steps, no new logins.</h2>
+        </header>
+
+        <ol class="steps">
+          <li class="step">
+            <span class="step-num">1</span>
+            <h3>Add Margin to Chrome</h3>
+            <p>It works with the Aurora ERP session you already have open. No passwords to share.</p>
+          </li>
+          <li class="step">
+            <span class="step-num">2</span>
+            <h3>Pick a class and assessment</h3>
+            <p>Margin finds your classes and the journals, labs, essays and projects waiting to be graded.</p>
+          </li>
+          <li class="step">
+            <span class="step-num">3</span>
+            <h3>Review, adjust, save</h3>
+            <p>Every AI score is a draft. Change anything, then save to Aurora ERP when you're happy.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ================= DEMO ================= -->
+    <section class="section demo" id="demo">
+      <div class="container">
+        <header class="section-head">
+          <p class="eyebrow">Try it</p>
+          <h2>Grade a sample journal.</h2>
+          <p class="section-sub">Edit the student's answers, then let Margin draft the rubric. Nothing you type here is stored.</p>
+        </header>
+
+        <div class="demo-grid">
+          <form class="demo-form" id="demoForm">
+            <label>Experience — what happened?
+              <textarea name="experience" rows="3">In this week's lab we built an ER model for the library system. My first draft had no way to track late returns.</textarea>
+            </label>
+            <label>Feelings — how did you react?
+              <textarea name="feelings" rows="2">I was frustrated at first because I had to redo the diagram.</textarea>
+            </label>
+            <label>Learning — what did you learn?
+              <textarea name="learning" rows="2">Splitting Loan into its own entity made the relationships and the queries much simpler.</textarea>
+            </label>
+            <label>Application — how will you use it?
+              <textarea name="application" rows="2">In the next lab I will normalise to 3NF before writing any SQL.</textarea>
+            </label>
+            <label>Conclusion
+              <textarea name="conclusion" rows="2">Designing carefully up front saves time later.</textarea>
+            </label>
+
+            <button class="btn btn-primary" type="submit" id="demoSubmit">Draft the grade</button>
+          </form>
+
+          <div class="demo-result" id="demoResult" aria-live="polite">
+            <div class="demo-empty">
+              <img src="assets/logo-mark.svg" alt="" width="56" height="56" />
+              <p>Your draft rubric will appear here.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TRUST ================= -->
+    <section class="section trust" id="trust">
+      <div class="container trust-grid">
+        <div>
+          <p class="eyebrow eyebrow-light">You stay in control</p>
+          <h2>Margin suggests. You decide.</h2>
+        </div>
+        <ul class="trust-list">
+          <li><strong>Nothing is saved without you.</strong> Every grade waits for your review and confirmation.</li>
+          <li><strong>Your login stays yours.</strong> Margin uses the Aurora session already in your browser.</li>
+          <li><strong>Dry runs first.</strong> Attendance is previewed against the ERP roster before anything is sent.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ================= CTA ================= -->
+    <section class="section cta">
+      <div class="container cta-inner">
+        <h2>Get your evenings back.</h2>
+        <p>Margin is in beta — try it on a sample journal now.</p>
+        <a class="btn btn-primary" href="#demo">Try it free</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <a class="brand brand-sm" href="#top">
+        <img src="assets/logo-mark.svg" alt="" width="28" height="28" />
+        <span>Margin</span>
+      </a>
+      <p>© <span id="year">2026</span> Margin. An independent tool, not affiliated with Aurora.</p>
+    </div>
+  </footer>
+
+  <script src="js/config.js"></script>
+  <script type="module" src="js/demo.js"></script>
+</body>
+</html>
