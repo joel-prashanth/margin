@@ -6,9 +6,9 @@
 
 | File | Use |
 |---|---|
-| `web/assets/logo-mark.svg` | App icon, favicon, avatars, anywhere square |
-| `web/assets/logo.svg` | Header/lockup with the "Margin" wordmark |
-| `extension/assets/icons/icon{16,32,48,128}.png` | Chrome extension icons (rendered from the mark) |
+| `frontend/web/assets/logo-mark.svg` | App icon, favicon, avatars, anywhere square |
+| `frontend/web/assets/logo.svg` | Header/lockup with the "Margin" wordmark |
+| `frontend/extension/assets/icons/icon{16,32,48,128}.png` | Chrome extension icons (rendered from the mark) |
 
 The mark is an ink tile with a **red margin rule** on the left and an **M whose last stroke becomes a red-pen check**: "graded".
 
@@ -35,7 +35,7 @@ The mark is an ink tile with a **red margin rule** on the left and an **M whose 
 
 Use red sparingly, the way a teacher would: for marks and calls to action, not large fills. Never put small red `#E8483B` text on paper; use `#B8322A`.
 
-Dark mode swaps the page to deep ink (`#12142A`) with paper-colored text; tokens live in `web/css/tokens.css`.
+Dark mode swaps the page to deep ink (`#12142A`) with paper-colored text; tokens live in `frontend/web/css/tokens.css`.
 
 ## Type
 
