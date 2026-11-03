@@ -6,13 +6,16 @@ AI-assisted grading and attendance tools for faculty on Aurora ERP.
 
 | Folder | What it is |
 |---|---|
-| `extension/` | Chrome (MV3) extension, the bridge to Aurora ERP. See [extension/README.md](extension/README.md). |
-| `web/` | Landing page with a "try it" demo. Static HTML/CSS/JS, no build step. |
-| `api/` | *(planned)* FastAPI service for AI grading, accounts and usage, backed by Neon Postgres. |
+| `frontend/extension/` | Chrome (MV3) extension: the bridge to Aurora ERP and the grading UI. See [its README](frontend/extension/README.md). |
+| `frontend/web/` | Landing page with a "try it" demo. Static HTML/CSS/JS, no build step. |
+| `backend/api/` | FastAPI service for AI grading, accounts and usage, on Neon Postgres. See [its README](backend/api/README.md). |
 | `docs/` | [Branching & releases](docs/BRANCHING.md), [brand guide](docs/BRAND.md). |
 | `archive/` | Old drafts kept for reference. Not shipped. |
 
+**What runs where:** Aurora ERP can only be reached from the faculty member's own browser, so ERP calls stay in the extension. AI grading, accounts and usage live in the backend, and both frontends call it.
+
 ## Run locally
 
-- **Extension:** `chrome://extensions` → Developer mode → Load unpacked → select `extension/`.
-- **Website:** serve `web/` with any static server, e.g. `npx serve web`, then open the printed URL. Set `apiBase` in `web/js/config.js` once the API is running; until then the demo shows labelled sample output.
+- **Extension:** `chrome://extensions` → Developer mode → Load unpacked → select `frontend/extension/`.
+- **Website:** serve `frontend/web/` with any static server (e.g. `npx serve frontend/web`). Set `apiBase` in `frontend/web/js/config.js` to your API URL plus `/v1`; until then the demo shows labelled sample output.
+- **API:** see [backend/api/README.md](backend/api/README.md).
