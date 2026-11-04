@@ -1,4 +1,3 @@
-import { DEFAULT_SPREADSHEET_URL } from "../../config.js";
 import { getProfile, getPrivacyConsent, savePrivacyConsent } from "../services/profile-store.js";
 import { getFacultyClasses, verifyLogin } from "../services/erp-api.js";
 import {
@@ -131,7 +130,7 @@ export async function verifyConfiguredProfileInBackground() {
 }
 
 async function initializeFirstTimeSetup() {
-  const { facultyNameInput, spreadsheetInput } = setupElements;
+  const { facultyNameInput } = setupElements;
 
   showNavigation();
 
@@ -169,10 +168,6 @@ async function initializeFirstTimeSetup() {
       setLoginStatus(`ERP Login ✓ ${facultySession.detectedFacultyName}`, "success");
 
       facultyNameInput.value = facultySession.detectedFacultyName;
-    }
-
-    if (!spreadsheetInput.value.trim()) {
-      spreadsheetInput.value = DEFAULT_SPREADSHEET_URL;
     }
 
     showSetupScreen();

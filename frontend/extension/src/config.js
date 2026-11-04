@@ -16,6 +16,3 @@ export const DEFAULT_CF_WORKER_URL =
 
 export const GEMINI_API_BASE =
   "https://generativelanguage.googleapis.com/v1beta/models";
-
-export const DEFAULT_SPREADSHEET_URL =
-  "https://docs.google.com/spreadsheets/d/15XLABSb4CTMdhjLCIKj0US7ArRccNatiVdl91E_Xbzc/edit?gid=1930503446#gid=1930503446";
