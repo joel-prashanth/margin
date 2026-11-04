@@ -1,0 +1,12 @@
+{
+  "name": "margin-worker",
+  "private": true,
+  "description": "Margin AI grading on Cloudflare Workers.",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "4.157.0"
+  }
+}

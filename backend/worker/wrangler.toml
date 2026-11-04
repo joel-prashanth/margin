@@ -1,0 +1,8 @@
+# Cloudflare Worker config. Deploy with `npm run deploy` after `npx wrangler login`.
+name = "margin-grader"
+main = "src/index.js"
+compatibility_date = "2026-10-01"
+
+# Request logs and errors in the Cloudflare dashboard.
+[observability]
+enabled = true
