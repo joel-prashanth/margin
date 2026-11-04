@@ -19,18 +19,26 @@ Planned modules: `auth` (accounts), `usage` (metering for pricing), and a `jobs`
 
 ## Run locally
 
-Requires Python 3.12+.
+Requires [uv](https://docs.astral.sh/uv/getting-started/installation/). It installs Python 3.12 (pinned in `.python-version`) and the exact package versions in `uv.lock`.
 
 ```bash
 cd backend/api
-python -m venv .venv
-.venv\Scripts\activate            # Windows  (macOS/Linux: source .venv/bin/activate)
-pip install -e ".[dev]"
+uv sync                           # create .venv and install everything
 copy .env.example .env            # then fill in values (cp on macOS/Linux)
 
-uvicorn app.main:app --reload     # http://localhost:8000/docs
-pytest
-ruff check .
+uv run uvicorn app.main:app --reload   # http://localhost:8000/docs
+uv run pytest
+uv run ruff check .
+```
+
+Dependencies: `uv add <package>` (or `uv add --dev <tool>`) updates `pyproject.toml` and `uv.lock` together; commit both. CI runs `uv sync --locked` and fails if they disagree.
+
+**Windows with Smart App Control:** if `uv sync` or `uv run` fails with "An Application Control policy has blocked this file", create the venv with Python's own launcher first, then sync into it:
+
+```bash
+uv python install 3.12
+& "$(uv python find 3.12)" -m venv .venv   # PowerShell
+uv sync
 ```
 
 The API starts without a database. `/health` reports `"database": "not_configured"` until `DATABASE_URL` is set.
