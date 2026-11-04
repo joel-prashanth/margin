@@ -1,0 +1,48 @@
+# Lint and test the FastAPI backend.
+name: API CI
+
+on:
+  # Every PR, not only ones touching backend/api: this check is required on
+  # main, and a required check that never runs blocks the merge forever.
+  pull_request:
+  push:
+    branches: [main]
+    paths:
+      - "backend/api/**"
+      - ".github/workflows/api-ci.yml"
+
+# A newer push to the same PR cancels the run still going for the old one.
+concurrency:
+  group: api-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: api / lint and test
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: backend/api
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          cache-dependency-glob: backend/api/uv.lock
+
+      # Installs the Python from .python-version and the exact versions in
+      # uv.lock. --locked fails if pyproject.toml changed without re-locking.
+      - name: Install
+        run: uv sync --locked
+
+      - name: Lint
+        run: uv run ruff check --output-format=github .
+
+      - name: Test
+        run: uv run pytest -q
