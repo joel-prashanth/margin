@@ -1,0 +1,17 @@
+# Who reviews what. GitHub requests a review from the matching owners on
+# every pull request, skipping the author. When several lines match a file,
+# the LAST one wins, so general rules go first and overrides go below.
+#
+# Both of us are listed on every path on purpose: nobody can approve their
+# own pull request, so a path with a single owner would block that owner's
+# PRs once "Require review from Code Owners" is on. Listing both means the
+# other person is always the one asked. Lead owner is named first.
+
+# Default: anything not matched below (root README, docs/, archive/, .github/).
+*            @joel-prashanth @Sai-Siv
+
+# Frontend: Chrome extension and landing page. Lead: Sai.
+/frontend/   @Sai-Siv @joel-prashanth
+
+# Backend: FastAPI app, migrations, tests. Lead: Joel.
+/backend/    @joel-prashanth @Sai-Siv
