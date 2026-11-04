@@ -1,7 +1,13 @@
 # Cloudflare Worker config. Deploy with `npm run deploy` after `npx wrangler login`.
-name = "margin-grader"
+# Deploys to the existing margin-ai Worker on Joel's account:
+# https://margin-ai.joel-prashanth0528.workers.dev
+name = "margin-ai"
 main = "src/index.js"
 compatibility_date = "2026-10-01"
+
+# Cloudflare's own models, available in code as env.AI. No API key needed.
+[ai]
+binding = "AI"
 
 # Request logs and errors in the Cloudflare dashboard.
 [observability]

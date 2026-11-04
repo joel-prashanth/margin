@@ -1,11 +1,11 @@
 # Margin Worker
 
-Cloudflare Worker that grades journals, reflective essays and lab reports for the extension.
+Cloudflare Worker that grades reflective journals with Workers AI (`@cf/meta/llama-3.1-8b-instruct-fast`). Live at `https://margin-ai.joel-prashanth0528.workers.dev`.
 
 ## Routes
 
-- `GET /health` → `{ status: "ok" }`
-- `POST /grade-journal`, `/grade-reflective-essay`, `/grade-lab` → `{ success, data }` or `{ success: false, message }`. **Answer 501** until the grading logic is moved over from the previous Worker.
+- `POST /grade-journal` with `{ experience, learning, application, feelings, conclusion }` → `{ success: true, data: { rubric, reasoning, feedback, flags, marks, maxMarks } }`, or `{ success: false, message }`.
+- Every other path answers 404. The extension also calls `/grade-reflective-essay` and `/grade-lab`; it falls back to Gemini or skips them when they fail.
 
 ## Run and deploy
 
@@ -14,9 +14,9 @@ Requires Node 20+.
 ```bash
 cd backend/worker
 npm install
-npm run dev                # http://localhost:8787
 npx wrangler login         # once, opens Cloudflare in the browser
-npm run deploy             # publishes to <name>.<your-subdomain>.workers.dev
+npm run dev                # http://localhost:8787 (Workers AI calls go to your account and use quota)
+npm run deploy             # updates margin-ai
 ```
 
-Secrets (for example an AI provider key) are set with `npx wrangler secret put NAME`, never in `wrangler.toml`. For local runs put them in `.dev.vars`, which git ignores.
+The code here is the source of truth; don't edit it in the Cloudflare dashboard, or the next deploy from the repo overwrites those edits. Secrets, if one is ever needed, go in with `npx wrangler secret put NAME` (and `.dev.vars` locally, which git ignores), never in `wrangler.toml`.
