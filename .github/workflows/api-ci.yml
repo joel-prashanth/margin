@@ -1,0 +1,48 @@
+# Lint and test the FastAPI backend on every pull request that touches it.
+name: API CI
+
+on:
+  pull_request:
+    paths:
+      - "backend/api/**"
+      - ".github/workflows/api-ci.yml"
+  push:
+    branches: [main]
+    paths:
+      - "backend/api/**"
+      - ".github/workflows/api-ci.yml"
+
+# A newer push to the same PR cancels the run still going for the old one.
+concurrency:
+  group: api-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: api / lint and test
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: backend/api
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: backend/api/pyproject.toml
+
+      - name: Install
+        run: pip install -e ".[dev]"
+
+      - name: Lint
+        run: ruff check --output-format=github .
+
+      - name: Test
+        run: pytest -q
