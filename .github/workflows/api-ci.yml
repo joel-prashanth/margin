@@ -1,11 +1,10 @@
-# Lint and test the FastAPI backend on every pull request that touches it.
+# Lint and test the FastAPI backend.
 name: API CI
 
 on:
+  # Every PR, not only ones touching backend/api: this check is required on
+  # main, and a required check that never runs blocks the merge forever.
   pull_request:
-    paths:
-      - "backend/api/**"
-      - ".github/workflows/api-ci.yml"
   push:
     branches: [main]
     paths:
