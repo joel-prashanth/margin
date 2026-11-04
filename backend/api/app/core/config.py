@@ -12,7 +12,7 @@ class Settings(BaseSettings):
 
     environment: Literal["local", "staging", "production"] = "local"
 
-    # Neon Postgres, e.g. postgresql+psycopg://user:pass@host/db?sslmode=require
+    # Neon Postgres. Paste the dashboard string as-is; the psycopg driver prefix is added below.
     database_url: str | None = None
 
     cors_origins: Annotated[list[str], NoDecode] = []
@@ -30,6 +30,15 @@ class Settings(BaseSettings):
     @classmethod
     def blank_to_none(cls, value: object) -> object:
         return value or None
+
+    @field_validator("database_url")
+    @classmethod
+    def use_psycopg_driver(cls, value: str | None) -> str | None:
+        # Neon hands out postgresql:// URLs; SQLAlchemy reads those as psycopg2, which we
+        # don't install. Point them at psycopg (v3) instead.
+        if value and value.startswith(("postgresql://", "postgres://")):
+            return "postgresql+psycopg://" + value.split("://", 1)[1]
+        return value
 
 
 @lru_cache

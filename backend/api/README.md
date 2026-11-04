@@ -46,7 +46,7 @@ The API starts without a database. `/health` reports `"database": "not_configure
 ## Database (Neon)
 
 1. Create a Neon project and copy the connection string (Dashboard → Connect).
-2. Set `DATABASE_URL=postgresql+psycopg://…?sslmode=require` in `.env`.
+2. Paste it into `.env` as `DATABASE_URL=…` exactly as Neon shows it (`postgresql://…?sslmode=require`); the app switches it to the psycopg driver.
 3. `alembic revision --autogenerate -m "describe change"` after adding models, then `alembic upgrade head`.
 
 Each API pull request gets its own Neon branch for testing migrations (see [docs/BRANCHING.md](../../docs/BRANCHING.md)).
